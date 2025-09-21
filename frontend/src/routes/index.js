@@ -20,6 +20,8 @@ import AdminUserManagement from '../components/AdminUserManagement'
 import AdminOrderManagement from '../components/AdminOrderManagement'
 import AdminDashboard from '../components/AdminDashboard'
 import AdminCouponManagement from '../components/AdminCouponManagement'
+import UploadTest from '../components/UploadTest'
+import ImageTest from '../components/ImageTest'
 
 const router = createBrowserRouter([
     {
@@ -85,6 +87,14 @@ const router = createBrowserRouter([
             {
                 path : "contact",
                 element : <Contact/>
+            },
+            {
+                path : "upload-test",
+                element : <UploadTest/>
+            },
+            {
+                path : "image-test",
+                element : <ImageTest/>
             },
             {
                 path : "admin-panel",

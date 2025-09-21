@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { CgClose } from "react-icons/cg";
 import productCategory from '../helpers/productCategory';
 import { FaCloudUploadAlt } from "react-icons/fa";
-import uploadImage from '../helpers/uploadImage';
+import { uploadFile } from '../utils/uploadUtils';
 import DisplayImage from './DisplayImage';
 import { MdDelete } from "react-icons/md";
 import SummaryApi from '../common';
@@ -26,6 +26,7 @@ const AdminEditProduct = ({
   })
   const [openFullScreenImage,setOpenFullScreenImage] = useState(false)
   const [fullScreenImage,setFullScreenImage] = useState("")
+  const [forceUpdate, setForceUpdate] = useState(0)
 
 
   const handleOnChange = (e)=>{
@@ -41,14 +42,34 @@ const AdminEditProduct = ({
 
   const handleUploadProduct = async(e) => {
     const file = e.target.files[0]
-    const uploadImageCloudinary = await uploadImage(file)
-
-    setData((preve)=>{
-      return{
-        ...preve,
-        productImage : [ ...preve.productImage, uploadImageCloudinary.url]
+    
+    if (!file) return
+    
+    console.log('AdminEditProduct: Starting upload:', { fileName: file.name, fileSize: file.size, fileType: file.type })
+    
+    try {
+      const result = await uploadFile(file, 'products')
+      console.log('AdminEditProduct: Upload result:', result)
+      
+      if (result.success) {
+        console.log('AdminEditProduct: Adding image to state:', result.url)
+        setData((preve)=>{
+          const newImages = [...preve.productImage, result.url]
+          console.log('AdminEditProduct: Updated productImage array:', newImages)
+          return{
+            ...preve,
+            productImage : newImages
+          }
+        })
+        setForceUpdate(prev => prev + 1) // Force re-render
+        toast.success('Image uploaded successfully')
+      } else {
+        toast.error('Upload failed: ' + result.error)
       }
-    })
+    } catch (error) {
+      console.error('AdminEditProduct: Upload error:', error)
+      toast.error('Upload failed: ' + error.message)
+    }
   }
 
   const handleDeleteProductImage = async(index)=>{
@@ -155,20 +176,24 @@ const AdminEditProduct = ({
                      </div>
            </div>
            </label> 
-           <div>
+           <div key={forceUpdate}>
+               {console.log('AdminEditProduct: Rendering images, productImage array:', data?.productImage, 'forceUpdate:', forceUpdate)}
                {
-                 data?.productImage[0] ? (
+                 data?.productImage && data.productImage.length > 0 ? (
                      <div className='flex items-center gap-2'>
                          {
                            data.productImage.map((el,index)=>{
+                             console.log(`AdminEditProduct: Rendering image ${index}:`, el)
                              return(
-                               <div className='relative group'>
+                               <div key={index} className='relative group'>
                                    <img 
                                      src={el} 
-                                     alt={el} 
+                                     alt={`Product image ${index + 1}`}
                                      width={80} 
                                      height={80}  
-                                     className='bg-slate-100 border cursor-pointer'  
+                                     className='bg-slate-100 border cursor-pointer object-cover'  
+                                     onLoad={() => console.log(`Image ${index} loaded successfully:`, el)}
+                                     onError={(e) => console.error(`Image ${index} failed to load:`, el, e)}
                                      onClick={()=>{
                                        setOpenFullScreenImage(true)
                                        setFullScreenImage(el)

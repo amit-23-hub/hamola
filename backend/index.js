@@ -14,6 +14,20 @@ app.use(cors({
 app.use(express.json())
 app.use(cookieParser())
 
+// Add request logging middleware
+app.use((req, res, next) => {
+  console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`)
+  if (req.path.includes('upload')) {
+    console.log('Upload request detected:', {
+      method: req.method,
+      path: req.path,
+      contentType: req.get('content-type'),
+      contentLength: req.get('content-length')
+    })
+  }
+  next()
+})
+
 app.use("/api",router)
 
 const PORT = 8080 || process.env.PORT

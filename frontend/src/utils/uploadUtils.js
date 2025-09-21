@@ -8,6 +8,14 @@ import SummaryApi from '../common'
  */
 export const uploadFile = async (file, preset = 'products') => {
   try {
+    console.log('uploadUtils: Starting single file upload:', {
+      fileName: file.name,
+      fileSize: file.size,
+      fileType: file.type,
+      preset,
+      url: SummaryApi.uploadToCloudinary.url
+    })
+
     if (!file) {
       throw new Error('No file provided')
     }
@@ -16,13 +24,16 @@ export const uploadFile = async (file, preset = 'products') => {
     formData.append('image', file)
     formData.append('preset', preset)
 
+    console.log('uploadUtils: Sending request to backend...')
     const response = await fetch(SummaryApi.uploadToCloudinary.url, {
       method: SummaryApi.uploadToCloudinary.method,
       credentials: 'include',
       body: formData
     })
 
+    console.log('uploadUtils: Response status:', response.status, response.statusText)
     const result = await response.json()
+    console.log('uploadUtils: Response data:', result)
 
     if (!result.success) {
       throw new Error(result.message || 'Upload failed')
@@ -38,7 +49,7 @@ export const uploadFile = async (file, preset = 'products') => {
       bytes: result.data.bytes
     }
   } catch (error) {
-    console.error('Upload error:', error)
+    console.error('uploadUtils: Upload error:', error)
     return {
       success: false,
       error: error.message
@@ -54,6 +65,13 @@ export const uploadFile = async (file, preset = 'products') => {
  */
 export const uploadMultipleFiles = async (files, preset = 'products') => {
   try {
+    console.log('uploadUtils: Starting multiple file upload:', {
+      fileCount: files.length,
+      fileNames: files.map(f => f.name),
+      preset,
+      url: SummaryApi.uploadMultipleToCloudinary.url
+    })
+
     if (!files || files.length === 0) {
       throw new Error('No files provided')
     }
@@ -64,13 +82,16 @@ export const uploadMultipleFiles = async (files, preset = 'products') => {
     })
     formData.append('preset', preset)
 
+    console.log('uploadUtils: Sending multiple files request to backend...')
     const response = await fetch(SummaryApi.uploadMultipleToCloudinary.url, {
       method: SummaryApi.uploadMultipleToCloudinary.method,
       credentials: 'include',
       body: formData
     })
 
+    console.log('uploadUtils: Multiple upload response status:', response.status, response.statusText)
     const result = await response.json()
+    console.log('uploadUtils: Multiple upload response data:', result)
 
     if (!result.success) {
       throw new Error(result.message || 'Upload failed')
@@ -86,7 +107,7 @@ export const uploadMultipleFiles = async (files, preset = 'products') => {
       failedCount: result.data.failedCount
     }
   } catch (error) {
-    console.error('Multiple upload error:', error)
+    console.error('uploadUtils: Multiple upload error:', error)
     return {
       success: false,
       error: error.message

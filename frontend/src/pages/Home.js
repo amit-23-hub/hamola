@@ -78,7 +78,7 @@ const Home = () => {
   return (
     <div>
       {/* Hero Slider */}
-      <section className='mb-8'>
+      <section className='mb-8 mt-12'>
         <div className='container mx-auto px-4'>
           <div className='grid lg:grid-cols-3 gap-6'>
             <div className='lg:col-span-2'>
