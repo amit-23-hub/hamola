@@ -4,6 +4,7 @@ import BannerSection from './BannerSection'
 import VerticalCardProduct from './VerticalCardProduct'
 import Context from '../context'
 import SummaryApi from '../common'
+import decorbanner from '../assest/banner/decorbanner.webp'
 
 const HomeDecorSection = () => {
   const { user } = useContext(Context)
@@ -23,7 +24,7 @@ const HomeDecorSection = () => {
           credentials: 'include'
         })
         const data = await response.json()
-        
+
         if (data.success) {
           setDecorProducts(data.data)
         }
@@ -41,7 +42,10 @@ const HomeDecorSection = () => {
     <section className='py-12 bg-gray-50'>
       <div className='container mx-auto px-4'>
         {/* Banner Section */}
-        <div className='mb-12'>
+        <div
+          className='mb-12 bg-cover bg-center'
+          style={{ backgroundImage: `url(${decorbanner})` }}
+        >
           <BannerSection
             sectionType="home-decor"
             title="Transform Your Space"
@@ -53,6 +57,7 @@ const HomeDecorSection = () => {
           />
         </div>
 
+
         {/* Featured Decor Products */}
         <div className='mb-8'>
           <div className='text-center mb-8'>
@@ -61,9 +66,9 @@ const HomeDecorSection = () => {
               Curated collection of decorative items to enhance every corner of your home
             </p>
           </div>
-          
-          <VerticalCardProduct 
-            category="decor" 
+
+          <VerticalCardProduct
+            category="decor"
             heading="Trending Decor Items"
           />
         </div>
@@ -76,7 +81,7 @@ const HomeDecorSection = () => {
             { name: 'Candles', icon: '🕯️', count: '25+ items', category: 'candles' },
             { name: 'Mirrors', icon: '🪞', count: '20+ items', category: 'mirrors' }
           ].map((item, index) => (
-            <Link 
+            <Link
               key={index}
               to={`/product-category?category=${item.category}`}
               className='bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow text-center group'
