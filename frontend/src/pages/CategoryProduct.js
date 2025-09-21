@@ -18,11 +18,16 @@ const CategoryProduct = () => {
     })
 
     const [selectCategory,setSelectCategory] = useState(urlCategoryListObject)
-    const [filterCategoryList,setFilterCategoryList] = useState([])
+    const [filterCategoryList,setFilterCategoryList] = useState(urlCategoryListinArray)
 
     const [sortBy,setSortBy] = useState("")
 
     const fetchData = async()=>{
+      if(filterCategoryList.length === 0) {
+        setData([])
+        return
+      }
+      
       const response = await fetch(SummaryApi.filterProduct.url,{
         method : SummaryApi.filterProduct.method,
         headers : {
@@ -52,6 +57,22 @@ const CategoryProduct = () => {
       fetchData()
     },[filterCategoryList])
 
+    // Handle URL changes when component mounts or URL changes
+    useEffect(() => {
+      const newUrlSearch = new URLSearchParams(location.search)
+      const newUrlCategoryList = newUrlSearch.getAll("category")
+      
+      if (newUrlCategoryList.length > 0) {
+        const newUrlCategoryObject = {}
+        newUrlCategoryList.forEach(el => {
+          newUrlCategoryObject[el] = true
+        })
+        
+        setSelectCategory(newUrlCategoryObject)
+        setFilterCategoryList(newUrlCategoryList)
+      }
+    }, [location.search])
+
     useEffect(()=>{
       const arrayOfCategory = Object.keys(selectCategory).map(categoryKeyName =>{
         if(selectCategory[categoryKeyName]){
@@ -67,7 +88,7 @@ const CategoryProduct = () => {
         if((arrayOfCategory.length - 1 ) === index  ){
           return `category=${el}`
         }
-        return `category=${el}&&`
+        return `category=${el}&`
       })
 
       navigate("/product-category?"+urlFormat.join(""))

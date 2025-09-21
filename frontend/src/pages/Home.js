@@ -6,6 +6,9 @@ import VerticalCardProduct from '../components/VerticalCardProduct'
 import HeroSlider from '../components/HeroSlider'
 import AdvertisementCard from '../components/AdvertisementCard'
 import OffersSection from '../components/OffersSection'
+import HomeDecorSection from '../components/HomeDecorSection'
+import HomeFurnishingSection from '../components/HomeFurnishingSection'
+import CollectionCard from '../components/CollectionCard'
 import { Link } from 'react-router-dom'
 import SummaryApi from '../common'
 import Context from '../context'
@@ -162,23 +165,83 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Home Decor Section */}
+      <HomeDecorSection />
+
+      {/* Home Furnishing Section */}
+      <HomeFurnishingSection />
+
       {/* Product Categories Grid */}
-      <section className='py-8'>
+      <section className='py-8 bg-gray-50'>
         <div className='container mx-auto px-4'>
           <h2 className='text-2xl font-bold text-center text-gray-900 mb-6'>
             Explore Our Collections
           </h2>
           
-          <div className='grid md:grid-cols-2 lg:grid-cols-3 gap-6'>
-            <VerticalCardProduct category={"storage"} heading={"Storage Solutions"}/>
-            <VerticalCardProduct category={"dining"} heading={"Dining Collection"}/>
-            <VerticalCardProduct category={"office"} heading={"Office Furniture"}/>
-            <VerticalCardProduct category={"outdoor"} heading={"Outdoor Living"}/>
-            <VerticalCardProduct category={"lighting"} heading={"Lighting"}/>
-            <VerticalCardProduct category={"decor"} heading={"Home Decor"}/>
+          <div className='grid md:grid-cols-2 lg:grid-cols-3 gap-8'>
+            <CollectionCard category={"storage"} heading={"Storage Solutions"} icon="🗄️"/>
+            <CollectionCard category={"dining"} heading={"Dining Collection"} icon="🍽️"/>
+            <CollectionCard category={"office"} heading={"Office Furniture"} icon="💼"/>
+            <CollectionCard category={"outdoor"} heading={"Outdoor Living"} icon="🌿"/>
+            <CollectionCard category={"lighting"} heading={"Lighting"} icon="💡"/>
+            <CollectionCard category={"rugs"} heading={"Rugs & Carpets"} icon="🪞"/>
           </div>
         </div>
       </section>
+
+      {/* Customer Reviews Section */}
+      <section className='py-12 bg-white'>
+        <div className='container mx-auto px-4'>
+          <div className='text-center mb-12'>
+            <h2 className='text-3xl font-bold text-gray-900 mb-4'>What Our Customers Say</h2>
+            <p className='text-lg text-gray-600'>Real reviews from satisfied customers</p>
+          </div>
+          
+          <div className='grid md:grid-cols-3 gap-8'>
+            {[
+              {
+                name: 'Sarah Johnson',
+                rating: 5,
+                review: 'Absolutely love my new sofa! The quality is exceptional and delivery was super fast.',
+                image: '/api/placeholder/60/60'
+              },
+              {
+                name: 'Mike Chen',
+                rating: 5,
+                review: 'Great customer service and beautiful furniture. Highly recommend FurniCraft!',
+                image: '/api/placeholder/60/60'
+              },
+              {
+                name: 'Emily Davis',
+                rating: 5,
+                review: 'Perfect addition to my living room. The design is exactly what I was looking for.',
+                image: '/api/placeholder/60/60'
+              }
+            ].map((review, index) => (
+              <div key={index} className='bg-gray-50 rounded-lg p-6 text-center'>
+                <div className='flex justify-center mb-4'>
+                  {[...Array(review.rating)].map((_, i) => (
+                    <span key={i} className='text-yellow-400 text-xl'>★</span>
+                  ))}
+                </div>
+                <p className='text-gray-700 mb-4 italic'>"{review.review}"</p>
+                <div className='flex items-center justify-center'>
+                  <img 
+                    src={review.image} 
+                    alt={review.name}
+                    className='w-12 h-12 rounded-full mr-3'
+                  />
+                  <div>
+                    <p className='font-semibold text-gray-900'>{review.name}</p>
+                    <p className='text-sm text-gray-600'>Verified Customer</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
 
       {/* Why Choose Us Section */}
       <section className='py-8 bg-gray-900 text-white'>

@@ -20,6 +20,7 @@ import AdminUserManagement from '../components/AdminUserManagement'
 import AdminOrderManagement from '../components/AdminOrderManagement'
 import AdminDashboard from '../components/AdminDashboard'
 import AdminCouponManagement from '../components/AdminCouponManagement'
+import BannerManagement from '../components/BannerManagement'
 import UploadTest from '../components/UploadTest'
 import ImageTest from '../components/ImageTest'
 
@@ -123,6 +124,10 @@ const router = createBrowserRouter([
                     {
                         path : "all-products",
                         element : <AllProducts/>
+                    },
+                    {
+                        path : "banner-management",
+                        element : <BannerManagement/>
                     },
                     {
                         path : "content-management",
