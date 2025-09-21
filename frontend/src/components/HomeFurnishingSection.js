@@ -4,6 +4,7 @@ import BannerSection from './BannerSection'
 import VerticalCardProduct from './VerticalCardProduct'
 import Context from '../context'
 import SummaryApi from '../common'
+import furnish from '../assest/banner/furnish.webp'
 
 const HomeFurnishingSection = () => {
   const { user } = useContext(Context)
@@ -41,7 +42,10 @@ const HomeFurnishingSection = () => {
     <section className='py-12 bg-white'>
       <div className='container mx-auto px-4'>
         {/* Banner Section */}
-        <div className='mb-12'>
+        <div
+                  className='mb-12 bg-cover bg-center'
+                  style={{ backgroundImage: `url(${furnish})` }}
+                >
           <BannerSection
             sectionType="home-furnishing"
             title="Complete Your Home"
