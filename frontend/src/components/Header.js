@@ -175,44 +175,25 @@ const Header = () => {
         </div>
 
         {/* Navigation Menu */}
-        <div className='hidden lg:flex items-center justify-center space-x-8 py-0.5 border-t border-gray-200'>
-          <div className='relative group'>
-            <button 
-              className='flex items-center space-x-1 px-4 py-2 text-gray-700 hover:text-red-600 font-medium'
-              onMouseEnter={() => setCategoryMenuOpen(true)}
-              onMouseLeave={() => setCategoryMenuOpen(false)}
+        <div className='hidden lg:flex items-center justify-center space-x-6 py-0.5 border-t border-gray-200 overflow-x-auto scrollbar-none'>
+          {productCategory.slice(0, 8).map(category => (
+            <Link 
+              key={category.id} 
+              to={`/product-category?category=${category.value}`}
+              className='flex items-center space-x-1 px-3 py-2 text-gray-700 hover:text-red-600 font-medium whitespace-nowrap transition-colors'
             >
-              <span>Categories</span>
-              <span>▼</span>
-            </button>
-            {categoryMenuOpen && (
-              <div 
-                className='absolute top-full left-0 w-96 bg-white shadow-lg rounded-lg border p-4 grid grid-cols-2 gap-4'
-                onMouseEnter={() => setCategoryMenuOpen(true)}
-                onMouseLeave={() => setCategoryMenuOpen(false)}
-              >
-                {productCategory.map(category => (
-                  <Link 
-                    key={category.id} 
-                    to={`/category/${category.value}`}
-                    className='flex items-center space-x-2 p-2 hover:bg-gray-100 rounded'
-                    onClick={() => setCategoryMenuOpen(false)}
-                  >
-                    <span className='text-xl'>{category.icon}</span>
-                    <span>{category.label}</span>
-                  </Link>
-                ))}
-              </div>
-            )}
-          </div>
+              <span className='text-lg'>{category.icon}</span>
+              <span className='text-sm'>{category.label}</span>
+            </Link>
+          ))}
           
-          <Link to="/sale" className='px-4 py-2 text-gray-700 hover:text-red-600 font-medium'>
+          <Link to="/product-category?category=sale" className='px-3 py-2 text-gray-700 hover:text-red-600 font-medium whitespace-nowrap'>
             Sale
           </Link>
-          <Link to="/new-arrivals" className='px-4 py-2 text-gray-700 hover:text-red-600 font-medium'>
+          <Link to="/product-category?category=new-arrivals" className='px-3 py-2 text-gray-700 hover:text-red-600 font-medium whitespace-nowrap'>
             New Arrivals
           </Link>
-          <Link to="/inspiration" className='px-4 py-2 text-gray-700 hover:text-red-600 font-medium'>
+          <Link to="/inspiration" className='px-3 py-2 text-gray-700 hover:text-red-600 font-medium whitespace-nowrap'>
             Inspiration
           </Link>
         </div>
@@ -241,7 +222,7 @@ const Header = () => {
               {productCategory.slice(0, 8).map(category => (
                 <Link 
                   key={category.id} 
-                  to={`/category/${category.value}`}
+                  to={`/product-category?category=${category.value}`}
                   className='flex items-center space-x-2 p-3 hover:bg-gray-100 rounded-lg'
                   onClick={() => setMobileMenuOpen(false)}
                 >
@@ -253,10 +234,10 @@ const Header = () => {
 
             {/* Mobile Navigation Links */}
             <div className='space-y-2 pt-4 border-t'>
-              <Link to="/sale" className='block py-2 text-gray-700 hover:text-red-600' onClick={() => setMobileMenuOpen(false)}>
+              <Link to="/product-category?category=sale" className='block py-2 text-gray-700 hover:text-red-600' onClick={() => setMobileMenuOpen(false)}>
                 Sale
               </Link>
-              <Link to="/new-arrivals" className='block py-2 text-gray-700 hover:text-red-600' onClick={() => setMobileMenuOpen(false)}>
+              <Link to="/product-category?category=new-arrivals" className='block py-2 text-gray-700 hover:text-red-600' onClick={() => setMobileMenuOpen(false)}>
                 New Arrivals
               </Link>
               <Link to="/inspiration" className='block py-2 text-gray-700 hover:text-red-600' onClick={() => setMobileMenuOpen(false)}>
